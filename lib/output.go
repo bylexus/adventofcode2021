@@ -5,11 +5,11 @@ import (
 	"time"
 )
 
-func AnsiBold(input interface{}) string {
+func AnsiBold(input string) string {
 	return fmt.Sprintf("\033[31;1;4m%v\033[0m", input)
 }
 
-func Highlight(input interface{}) string {
+func Highlight(input string) string {
 	return fmt.Sprintf("\033[1;4m%v\033[0m", input)
 }
 
@@ -18,7 +18,7 @@ func OutputTitle(input string) {
 	fmt.Printf("\033[1;4m%v\033[0m\n\n", outStr)
 }
 
-func OutputSolution(nr int, duration time.Duration, solution interface{}) {
+func OutputSolution(nr int, duration time.Duration, solution string) {
 	fmt.Printf("Solution %v: %v\n", nr, Highlight(solution))
 	fmt.Printf("Took: %v ms\n\n", float64(duration.Nanoseconds())/1000.0/1000.0)
 }

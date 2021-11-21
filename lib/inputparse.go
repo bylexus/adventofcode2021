@@ -9,8 +9,10 @@ import (
 	"strings"
 )
 
+//
+// Reads a file into a slice of lines, and returns a slice of strings.
 func ReadInputLines(filename string) []string {
-	const maxCapacity = 2 ^ 16
+	maxCapacity := 65536
 
 	file, err := os.Open(filename)
 	if err != nil {
@@ -24,13 +26,17 @@ func ReadInputLines(filename string) []string {
 	scanner.Buffer(buf, maxCapacity)
 
 	for scanner.Scan() {
-		line := scanner.Text()
-		result = append(result, line)
+		line := strings.TrimSpace(scanner.Text())
+		if len(line) > 0 {
+			result = append(result, line)
+		}
 	}
 
 	return result
 }
 
+// Takes an slice of strings, and returns a slice of ints,
+// taking each line as an int number
 func ParseIntLines(lines []string) []int64 {
 	res := make([]int64, len(lines))
 	for i, line := range lines {
@@ -43,12 +49,31 @@ func ParseIntLines(lines []string) []int64 {
 	return res
 }
 
+//
+// Takes a slice of strings, split each line by the given regex,
+// and returns a slice of split slices (array of arrays).
 func SplitLinesByRegex(lines []string, pattern string) [][]string {
-	res := make([][]string, len(lines))
+	res := make([][]string, 0)
 	re := regexp.MustCompile(pattern)
-	for i, line := range lines {
+	for _, line := range lines {
 		split := re.Split(line, -1)
-		res[i] = split
+		if len(split) > 0 {
+			res = append(res, split)
+		}
+	}
+	return res
+}
+
+// Takes a slice of strings, and runs a regex.FindSubmatch for each line,
+// returning all group matches for each line (so an array of arrays)
+func ParseGroupMatch(lines []string, pattern string) [][]string {
+	res := make([][]string, 0)
+	re := regexp.MustCompile(pattern)
+	for _, line := range lines {
+		split := re.FindStringSubmatch(line)
+		if len(split) > 0 {
+			res = append(res, split)
+		}
 	}
 	return res
 }
