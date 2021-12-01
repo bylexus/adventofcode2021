@@ -27,22 +27,40 @@ func (p *Day01) GetName() string {
 
 func (p *Day01) Init() {
 	// Read input
-	p.input = lib.ParseIntLines(lib.ReadInputLines("input/day-01.txt"))
+	// p.input = lib.ParseIntLines(lib.ReadInputLines("input/day01-test.txt"))
+	p.input = lib.ParseIntLines(lib.ReadInputLines("input/day01-input.txt"))
 
 }
 
 func (p *Day01) Run1() {
-	p.solution1 = 0
+	var prev int64 = p.input[0]
+	var counter int64 = 0
+	for i := 1; i < len(p.input); i++ {
+		if p.input[i] > prev {
+			counter++
+		}
+		prev = p.input[i]
+	}
+	p.solution1 = counter
 }
 
 func (p *Day01) Run2() {
-	p.solution2 = 0
+	var prev int64 = p.input[0] + p.input[1] + p.input[2]
+	var counter int64 = 0
+	for i := 1; i < len(p.input)-2; i++ {
+		win_sum := p.input[i] + p.input[i+1] + p.input[i+2]
+		if win_sum > prev {
+			counter++
+		}
+		prev = win_sum
+	}
+	p.solution2 = counter
 }
 
 func (p *Day01) GetSolution1() string {
-	return fmt.Sprintf("%v", p.solution1)
+	return fmt.Sprintf("%v\n", p.solution1)
 }
 
 func (p *Day01) GetSolution2() string {
-	return fmt.Sprintf("%v", p.solution2)
+	return fmt.Sprintf("%v\n", p.solution2)
 }

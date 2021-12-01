@@ -17,7 +17,7 @@ import (
 	"alexi.ch/aoc2021/lib"
 )
 
-type Data struct {
+type Prepare02Data struct {
 	min      int
 	max      int
 	letter   string
@@ -25,7 +25,7 @@ type Data struct {
 }
 
 type Prepare02 struct {
-	input     []Data
+	input     []Prepare02Data
 	solution1 int64
 	solution2 int64
 }
@@ -37,7 +37,7 @@ func (p *Prepare02) GetName() string {
 func (p *Prepare02) Init() {
 	// Read input
 	lines := lib.ParseGroupMatch(lib.ReadInputLines("input/prepare-02.txt"), `^([0-9]+)-([0-9]+)\s+([a-zA-z]):\s+([a-zA-Z]+)`)
-	p.input = make([]Data, 0)
+	p.input = make([]Prepare02Data, 0)
 	for _, data := range lines {
 		min, err := strconv.Atoi(data[1])
 		if err != nil {
@@ -47,7 +47,7 @@ func (p *Prepare02) Init() {
 		if err != nil {
 			panic("Cannot parse max value: " + data[2])
 		}
-		p.input = append(p.input, Data{
+		p.input = append(p.input, Prepare02Data{
 			min:      min,
 			max:      max,
 			letter:   data[3],
