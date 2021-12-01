@@ -4,9 +4,7 @@ package problems
 // AOC 2021
 // ----------
 //
-// Day 0 - setup tool chain
-// This just implements the last year's day 1 riddle, to set up all the
-// needed tools.
+// Day 01 - Sonar Sweep
 // ----------------------------------------------------------------------------
 
 import (
@@ -22,7 +20,7 @@ type Day01 struct {
 }
 
 func (p *Day01) GetName() string {
-	return "AoC 2021 - Day 1"
+	return "AoC 2021 - Day 1 - Sonar Sweep"
 }
 
 func (p *Day01) Init() {

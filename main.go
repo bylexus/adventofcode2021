@@ -19,6 +19,7 @@ func main() {
 	problemMap["prepare02"] = &problems.Prepare02{}
 
 	problemMap["day01"] = &problems.Day01{}
+	problemMap["day02"] = &problems.Day02{}
 
 	problem, defined := problemMap[problemName]
 	if defined == true {
@@ -30,5 +31,7 @@ func main() {
 
 		duration = lib.MeasureTime(problem.Run2)
 		lib.OutputSolution(2, duration, problem.GetSolution2())
+	} else {
+		panic("Oops - Problem not found - is it defined in main?")
 	}
 }

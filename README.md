@@ -26,3 +26,11 @@ The main program gets called with the day to run:
 ```shell
 $ go run main.go day01
 ```
+
+## Day 01 - Sonar Sweep
+
+As always, this one is just for getting us started - I used it to fine-tune my code
+structure and setting.
+
+A simple looping problem, my machine ran both problem in practically unmeasurable time - 
+1ms for problem 1, 2ms for problem 2, if the measurement is more or less correct.
