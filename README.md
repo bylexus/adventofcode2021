@@ -34,3 +34,11 @@ structure and setting.
 
 A simple looping problem, my machine ran both problem in practically unmeasurable time - 
 1ms for problem 1, 2ms for problem 2, if the measurement is more or less correct.
+
+
+## Day 02 - Dive!
+
+Again, a simple loop-and-count problem, almost easier than the first. Nothing special here.
+Needed it to figure out how to use regular expressions in Go, and to pack the values into a data struct,
+that took me longer than the problem itself :-)
+
