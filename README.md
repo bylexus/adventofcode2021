@@ -42,3 +42,7 @@ Again, a simple loop-and-count problem, almost easier than the first. Nothing sp
 Needed it to figure out how to use regular expressions in Go, and to pack the values into a data struct,
 that took me longer than the problem itself :-)
 
+## Day 03 - Binary Diagnostic
+
+Today bit operations where asked - as a first approach, I did it completely string-wise - which does NOT satisfy me...
+So I will try it again, that time with proper binary operations (masking, and/oring etc..)
