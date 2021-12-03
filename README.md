@@ -33,7 +33,7 @@ As always, this one is just for getting us started - I used it to fine-tune my c
 structure and setting.
 
 A simple looping problem, my machine ran both problem in practically unmeasurable time - 
-1ms for problem 1, 2ms for problem 2, if the measurement is more or less correct.
+1ns for problem 1, 2ns for problem 2, if the measurement is more or less correct.
 
 
 ## Day 02 - Dive!
@@ -46,3 +46,13 @@ that took me longer than the problem itself :-)
 
 Today bit operations where asked - as a first approach, I did it completely string-wise - which does NOT satisfy me...
 So I will try it again, that time with proper binary operations (masking, and/oring etc..)
+
+On a 2nd thought, it may be not much faster to do it bitwise: in the end, a string position access and char compare is
+not so much slower than bit mask operations.
+
+So my bot solutions took:
+
+* Solution 1: 0.06ms
+* Solution 2: 0.3ms
+
+OK, that's fast enough :-)

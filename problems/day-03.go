@@ -42,6 +42,12 @@ func (p *Day03) Init() {
 	}
 }
 
+//
+// Count the ones and zeroes per position in a list of bit strings.
+// So `ones[0]` contains the nr of 1-bits at the first (highest) position,
+// `zeroes[7]` contains the nr of 0-bits at the 8th position in the list
+//
+// returns ones and zeroes as array
 func (p *Day03) countBits(input []string) ([]int, []int) {
 	ones := make([]int, p.maxLen)
 	zeroes := make([]int, p.maxLen)
@@ -87,6 +93,12 @@ func (p *Day03) Run2() {
 	oxygenList := p.input[:]
 	co2List := p.input[:]
 
+	// Filter the input list as long as there are > 1 element:
+	// each inner loop filters the list by the actual bit position,
+	// then for the next loop, the bit position is increased to the
+	// right (next) bit.
+
+	// Oxygen list: keep more significant entries:
 	bitNr := 0
 	for {
 		newList := make([]string, 0)
@@ -95,7 +107,7 @@ func (p *Day03) Run2() {
 			if line[bitNr] == '1' && ones[bitNr] >= zeroes[bitNr] {
 				newList = append(newList, line)
 			}
-			if line[bitNr] == '0' && ones[bitNr] < zeroes[bitNr] {
+			if line[bitNr] == '0' && zeroes[bitNr] > ones[bitNr] {
 				newList = append(newList, line)
 			}
 		}
@@ -106,6 +118,7 @@ func (p *Day03) Run2() {
 		}
 	}
 
+	// CO2 list: keep less significant entries:
 	bitNr = 0
 	for {
 		newList := make([]string, 0)
@@ -114,7 +127,7 @@ func (p *Day03) Run2() {
 			if line[bitNr] == '0' && zeroes[bitNr] <= ones[bitNr] {
 				newList = append(newList, line)
 			}
-			if line[bitNr] == '1' && zeroes[bitNr] > ones[bitNr] {
+			if line[bitNr] == '1' && ones[bitNr] < zeroes[bitNr] {
 				newList = append(newList, line)
 			}
 		}
