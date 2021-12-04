@@ -56,3 +56,17 @@ So my bot solutions took:
 * Solution 2: 0.3ms
 
 OK, that's fast enough :-)
+
+## Day 04 - Giant Squid
+
+That one was a bit of a loop orgy - loop over boards over rows over cols... so at least O(n^3), which is not that fancy,
+but the input was not too much, so that's ok.
+
+The good thing: Solution 1 could be re-used for solution 2, so part of it was already done.
+
+Solutions took:
+
+* Solution 1: 0.4ms
+* Solution 2: 1.2ms
+
+Pretty fast :-)

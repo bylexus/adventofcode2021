@@ -64,6 +64,11 @@ func SplitLinesByRegex(lines []string, pattern string) [][]string {
 	return res
 }
 
+func SplitStringByRegex(line string, pattern string) []string {
+	re := regexp.MustCompile(pattern)
+	return re.Split(line, -1)
+}
+
 // Takes a slice of strings, and runs a regex.FindSubmatch for each line,
 // returning all group matches for each line (so an array of arrays)
 func ParseGroupMatch(lines []string, pattern string) [][]string {

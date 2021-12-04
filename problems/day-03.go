@@ -37,7 +37,6 @@ func (p *Day03) Init() {
 	p.input = lib.ReadInputLines("input/day03-input.txt")
 	p.maxLen = 0
 	for _, line := range p.input {
-
 		p.maxLen = int(math.Max(float64(p.maxLen), float64(len(line))))
 	}
 }
@@ -46,6 +45,11 @@ func (p *Day03) Init() {
 // Count the ones and zeroes per position in a list of bit strings.
 // So `ones[0]` contains the nr of 1-bits at the first (highest) position,
 // `zeroes[7]` contains the nr of 0-bits at the 8th position in the list
+//
+// The ones and zero counts sum up to the total nr of items:
+// So theoretically one can calculate the zeroes from the ones,
+// but having both values at hand directly is 1) more convenient and
+// 2) faster.
 //
 // returns ones and zeroes as array
 func (p *Day03) countBits(input []string) ([]int, []int) {
