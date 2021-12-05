@@ -25,7 +25,7 @@ type Day05 struct {
 	solution1 int64
 	solution2 int64
 
-	coordmap map[string]int
+	coordmap map[int]int
 }
 
 func (p *Day05) GetName() string {
@@ -50,7 +50,7 @@ func (p *Day05) Init() {
 func (p *Day05) Run1() {
 	// run only horizontal/vertial lines:
 	var overlapCount int64 = 0
-	p.coordmap = make(map[string]int)
+	p.coordmap = make(map[int]int)
 	for _, line := range p.input {
 		if line.x1 != line.x2 && line.y1 != line.y2 {
 			// skip if no h/v line:
@@ -72,7 +72,7 @@ func (p *Day05) Run1() {
 		x := line.x1
 		y := line.y1
 		for {
-			key := fmt.Sprintf("%v:%v", x, y)
+			key := x*10000 + y
 			count, present := p.coordmap[key]
 			// as soon as we have an overlap already, count it:
 			if count == 1 {
@@ -96,7 +96,7 @@ func (p *Day05) Run1() {
 func (p *Day05) Run2() {
 	// run all lines
 	var overlapCount int64 = 0
-	p.coordmap = make(map[string]int)
+	p.coordmap = make(map[int]int)
 	for _, line := range p.input {
 		xInc := 0
 		yInc := 0
@@ -114,7 +114,7 @@ func (p *Day05) Run2() {
 		x := line.x1
 		y := line.y1
 		for {
-			key := fmt.Sprintf("%v:%v", x, y)
+			key := x*10000 + y
 			count, present := p.coordmap[key]
 			// as soon as we have an overlap already, count it:
 			if count == 1 {

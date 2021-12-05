@@ -86,3 +86,10 @@ Based on the string key generation, this solution was not that fast, so I ended 
 
 Maybe with a better key hash algo it would be faster?
 
+--> OK, yes, definitifely:
+
+I changed the coord key algorithm from string to a simple x*1000+y algo (as x/y never goes above 1000): Now the solutions are at:
+
+
+* Solution 1: 10ms
+* Solution 2: 22ms
