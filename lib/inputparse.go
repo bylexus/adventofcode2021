@@ -82,3 +82,25 @@ func ParseGroupMatch(lines []string, pattern string) [][]string {
 	}
 	return res
 }
+
+func ToInt(str string) int {
+	i, err := strconv.Atoi(str)
+	if err != nil {
+		panic(err)
+	}
+	return i
+}
+
+func MaxInt(a int, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func MinInt(a int, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}

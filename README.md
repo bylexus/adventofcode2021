@@ -70,3 +70,19 @@ Solutions took:
 * Solution 2: 1.2ms
 
 Pretty fast :-)
+
+## Day 05 - Hydrothermal Venture
+
+The today's riddle was about drawing coordinates - as always with an indetermined size of the map I decided to store the coords
+as map - coordinates as key, occurence count as value.
+
+With that in mind it was pretty simple. For each line, I calculated the "increase" for each direction (x/y) for calculating the next coordinate,
+then I simply loop until I reach the final coords. Works for both h/v and diagonal (45deg) lines.
+
+Based on the string key generation, this solution was not that fast, so I ended at:
+
+* Solution 1: 38ms
+* Solution 2: 74ms
+
+Maybe with a better key hash algo it would be faster?
+
