@@ -49,6 +49,20 @@ func ParseIntLines(lines []string) []int64 {
 	return res
 }
 
+// Takes an slice of strings, and returns a slice of uint64,
+// taking each line as an unsigned int number
+func ParseUIntLines(lines []string) []uint64 {
+	res := make([]uint64, len(lines))
+	for i, line := range lines {
+		convValue, err := strconv.ParseInt(strings.TrimSpace(line), 10, 64)
+		if err != nil {
+			panic(err)
+		}
+		res[i] = uint64(convValue)
+	}
+	return res
+}
+
 //
 // Takes a slice of strings, split each line by the given regex,
 // and returns a slice of split slices (array of arrays).

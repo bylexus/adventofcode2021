@@ -93,3 +93,22 @@ I changed the coord key algorithm from string to a simple x*1000+y algo (as x/y 
 
 * Solution 1: 10ms
 * Solution 2: 22ms
+
+## Day 06 - Lanternfish
+
+This one took some thinking... It was clear from the first part that a brute-force solution will not work for the 2nd part - so
+there need to be a more clever way to solve this... Here is my approach:
+
+- We just count how many fishes per "age" exists --> we create an "age map": day --> nr or fishes
+- each day, this list rotates and sums up:
+	- fishes with count 0 got added to the count of day 6 (will be re-started)
+	- rotate the list (as each fish must be decrease to 0):
+		- sum of day 0 will be popped from the list --> now the list is shifted left 
+		- the old day 0 sum will be added to day 6 --> they are restarted
+		- at the same time, those fishes produce the same amount of new fishes, so add them to the end (day 8), too
+--> just loop over all days, sum up, done :-)
+
+With this approach, it was just a simple loop over 256 steps:
+
+* Solution 1: 0.004ms
+* Solution 2: 0.006ms
