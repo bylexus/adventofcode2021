@@ -112,3 +112,16 @@ With this approach, it was just a simple loop over 256 steps:
 
 * Solution 1: 0.004ms
 * Solution 2: 0.006ms
+
+## Day 07 - The Treachery of Whales
+
+OK, that was a very simple one - but it's a weekday, anyway :-)
+
+Just a simple loop-and-diff riddle - for the 2nd part, it suddenly appears to me that this is a Gaussian Summary Problem -
+As the total fuel ist the sum of increasing fuel per step (so for a distance of 5, you need 1+2+3+4+5 = 15 fuel),
+we can simply apply Gauss: (n^2 + n) / 2 for n = distance.
+
+Runtime:
+
+* Solution 1: 1.8ms
+* Solution 2: 2.2ms
