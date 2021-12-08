@@ -125,3 +125,73 @@ Runtime:
 
 * Solution 1: 1.8ms
 * Solution 2: 2.2ms
+
+## Day 08 -	Seven Segment Search
+
+This was the first day that took me quite a while to get a proper solution.
+
+Part 1 was straight forward, just count the appeareances of some randomly arranged strings.
+
+Part 2 was hard - first I tried to incrementally find out which character belongs to what segment of the
+7-digit number - but that was too hard and error-prone: I didn't get a solution after a kilometer of code and debug statements...
+
+Then I tried another approach:
+
+I simply relied on statistics:
+
+Each digit is made of 7 segments: 
+For easier identification, I number each digit's segment:
+```
+     0
+    dddd
+1  e    a 2
+   e    a
+3   ffff
+4  g    b 5
+   g    b
+    cccc
+	  6
+
+```
+
+But all segments are used a different number of times over all 10 digits:
+e.g. the segment 0 is used in 8 digits, while the segment 1 is only used in 6 digits.
+
+Each digit from 0-9 uses a certain number of single segments.
+For all 10 digits, we create a segment statistic: How many times
+is a single segment used for all digits?
+
+I then create a sum for each digit:
+- get the occurence number of for all segments for a digit
+- sum up those usage number
+
+--> it appears that this usage number is UNIQUE for all of the 10 digits!
+so we can simply identify the single output digit string by calculating
+the statistics as described above, and done!
+
+Example:
+
+Digit 1 uses 2 segments (#2 and #5, see above). Those 2 segments appear as follows
+in all 10 digits:
+
+* #2: 8 times for all 10 digits
+* #5: 9 times for all 10 digits
+* Adds up to 8 + 9 = 17 for the digit "1"
+
+This sum is unique for all 10 digits, and can be calculated beforehand.
+
+Then I do the same for the 4 output digits, find the corresponding sum in the
+pre-calculated stats, and got the real digit number for each digit.
+
+As an example, the output digit string "ac" is interpreted as follows:
+
+"a" and "c" are different segments of a 2-segment digit, but we don't know which.
+But we DO know that for all input digit strings, "a" appears 9 times, while "c"
+appears 8 times. The sum of these appearance per whole digit is 17,
+so "ac" must be the digit "1" (sum matches).
+
+
+--> then it was a simple lookup for the correct digit, and sum up, done.
+
+* Solution 1 took: 0.04ms
+* Solution 2 took: 0.32ms
