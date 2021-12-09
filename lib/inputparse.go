@@ -132,3 +132,12 @@ func MinUInt64(a uint64, b uint64) uint64 {
 	}
 	return b
 }
+
+func ArrayContains(check interface{}, arr []interface{}) bool {
+	for _, nr := range arr {
+		if check == nr {
+			return true
+		}
+	}
+	return false
+}

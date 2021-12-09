@@ -195,3 +195,18 @@ so "ac" must be the digit "1" (sum matches).
 
 * Solution 1 took: 0.04ms
 * Solution 2 took: 0.32ms
+
+## Day 09 - Smoke Basin
+
+The first part - finding the lowest locations, was super-simple: just process each location, and check if
+the surrounding locations are higher, done.
+
+For the 2nd part, it was obvious to me to take some kind of recursive fill algorithm - and I ended by
+"flood-filling" the pools from below: Starting with each basin bottom (low points), I flooded the basin
+"upwards" in all direction, until the top was reached.
+This is done with a simple recursive depth-first walk approach.
+
+Finally, the solutions took:
+
+* Solution 1: 0.13ms
+* Solution 2: 2.1ms
