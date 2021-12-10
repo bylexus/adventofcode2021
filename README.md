@@ -210,3 +210,25 @@ Finally, the solutions took:
 
 * Solution 1: 0.13ms
 * Solution 2: 2.1ms
+
+Day 10 - Syntax Scoring
+
+This one was a stack push/pop excercise: 
+
+For the first part, I parsed the input lines character by character:
+If an opener appears, push it on to the stack. If a closer appears, pop the stack:
+If the popped element is NOT the opener of the actual closer, then we have an error.
+
+If the line could be parsed without stack errors, we get a (possibly) incomplete line.
+The remaining stack is needed for the 2nd part, so keep it.
+
+the 2nd part was very simple, as I got the correct data structure already from the 1st part:
+just pop the stack for each incomplete line from behind, which contains only openers, and calc the corresponding
+closer sum, done.
+
+It was more tricky to calc the total sum correctly, in the end :-)
+
+Run time:
+
+* Solution 1: 1.5ms
+* Solution 2: 0.01ms

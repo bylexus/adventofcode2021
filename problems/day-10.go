@@ -4,7 +4,7 @@ package problems
 // AOC 2021
 // ----------
 //
-// Day 10 - xxx
+// Day 10 - Syntax Scoring
 // ----------------------------------------------------------------------------
 
 import (
@@ -19,12 +19,11 @@ type Day10 struct {
 	solution1        uint64
 	solution2        uint64
 	lines            []string
-	incompleteLines  []string
 	incompleteStacks [][]rune
 }
 
 func (p *Day10) GetName() string {
-	return "AoC 2021 - Day 10 - xxx"
+	return "AoC 2021 - Day 10 - Syntax Scoring"
 }
 
 func (p *Day10) Init() {
@@ -37,37 +36,28 @@ func (p *Day10) Run1() {
 	// build a stack - push to stack when an OPENING char appears,
 	// pop when a CLOSING char appears. The popped char must
 	// be the corresponding opening char.
+	openCloseMap := map[rune]rune{'<': '>', '(': ')', '{': '}', '[': ']'}
 	illegalChars := make([]rune, 0)
 Check:
 	for _, line := range p.lines {
 		stack := make([]rune, 0)
 		for _, input := range line {
-			if input == '<' || input == '(' || input == '[' || input == '{' {
-				stack = append(stack, input)
+			for opener := range openCloseMap {
+				if input == opener {
+					stack = append(stack, input)
+				}
 			}
-			if input == '>' || input == ')' || input == ']' || input == '}' {
-				popped := stack[len(stack)-1]
-				stack = stack[:len(stack)-1]
-				// fmt.Printf("Stack pop: %#v\n", stack)
-				if popped == '<' && input != '>' {
-					illegalChars = append(illegalChars, input)
-					continue Check
-				}
-				if popped == '(' && input != ')' {
-					illegalChars = append(illegalChars, input)
-					continue Check
-				}
-				if popped == '[' && input != ']' {
-					illegalChars = append(illegalChars, input)
-					continue Check
-				}
-				if popped == '{' && input != '}' {
-					illegalChars = append(illegalChars, input)
-					continue Check
+			for opener, closer := range openCloseMap {
+				if input == closer {
+					popped := stack[len(stack)-1]
+					stack = stack[:len(stack)-1]
+					if popped != opener {
+						illegalChars = append(illegalChars, input)
+						continue Check
+					}
 				}
 			}
 		}
-		p.incompleteLines = append(p.incompleteLines, line)
 		p.incompleteStacks = append(p.incompleteStacks, stack)
 	}
 	var sum uint64 = 0
@@ -89,8 +79,7 @@ Check:
 func (p *Day10) Run2() {
 	scores := make([]int, 0)
 
-	for i := range p.incompleteLines {
-		stack := p.incompleteStacks[i]
+	for _, stack := range p.incompleteStacks {
 
 		var sum int = 0
 		for i := len(stack) - 1; i >= 0; i-- {
