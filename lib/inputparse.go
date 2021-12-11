@@ -9,6 +9,11 @@ import (
 	"strings"
 )
 
+type Point struct {
+	X int
+	Y int
+}
+
 //
 // Reads a file into a slice of lines, and returns a slice of strings.
 func ReadInputLines(filename string) []string {

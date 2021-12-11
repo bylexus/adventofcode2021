@@ -3,6 +3,20 @@
 This repo contains my solutions and a diary for [Advent of Code 2021](https://adventofcode.com/2021/). This year I chose GO as my language: I don't know GO, so
 I take this as opportunity to learn it (a bit at least).
 
+## About GO
+
+I use this year's event to learn a small bit of GO. Here are my conclusions so far:
+
+* Good: Go is super-simple: it has a very small set of keywords, and a relatively small, but powerful stdlib.
+* Good: type inference: Go does infer almost any type, which is a little like writing in an untyped scripting language (which it is not!)
+* Good: all-in-one compiler and package management.
+* Meh: Go does not know generics. This makes it hard(er) to write generic collection functions like map(), filter() etc.
+  This can be circumvented by creating collection functions for your type, but hey, I don't want to re-invent the wheel
+  for each new type...
+* Meh: Sometimes it is not directly clear if a function parameter is taken by value or by reference: This can lead to 
+  unwanted behaviour: e.g. if you pass a Struct by value, it is copied into the function. This MAY be an advantage, but
+  for me, it is annoying most of the time (as the struct will need to be modified within the function).
+
 ## Preparations
 
 Today I set up a generic structure for all problems: Each problem will be defined as a struct that implements the following interface:
@@ -211,7 +225,7 @@ Finally, the solutions took:
 * Solution 1: 0.13ms
 * Solution 2: 2.1ms
 
-Day 10 - Syntax Scoring
+## Day 10 - Syntax Scoring
 
 This one was a stack push/pop excercise: 
 
@@ -232,3 +246,5 @@ Run time:
 
 * Solution 1: 1.5ms
 * Solution 2: 0.01ms
+
+ (Note to self: This problem would be a great excercise for the BZT module M411 - Algos and Datastructures)
