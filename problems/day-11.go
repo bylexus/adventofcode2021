@@ -14,14 +14,15 @@ import (
 	"alexi.ch/aoc2021/lib"
 )
 
-type Day11Octopuses [][]int
+type Day11Octopuses map[lib.PointKey]int
 
 type Day11 struct {
-	solution1 uint64
-	solution2 uint64
-	octopuses Day11Octopuses
-	dirs      []lib.Point
-	flashes   uint64
+	solution1  uint64
+	solution2  uint64
+	octopuses  Day11Octopuses
+	origPusses Day11Octopuses
+	dirs       []lib.Point
+	flashes    uint64
 }
 
 func (p *Day11) GetName() string {
@@ -44,44 +45,44 @@ func (p *Day11) Init() {
 	p.dirs[6] = lib.Point{X: 0, Y: 1}
 	p.dirs[7] = lib.Point{X: 1, Y: 1}
 
-	p.octopuses = make(Day11Octopuses, len(lines))
+	p.octopuses = make(Day11Octopuses)
+	p.origPusses = make(Day11Octopuses)
 	for i := range lines {
 		line := lines[i]
-		p.octopuses[i] = make([]int, len(line))
 		for idx, r := range line {
 			nr, err := strconv.Atoi(string(r))
 			if err != nil {
 				panic(err)
 			}
-			p.octopuses[i][idx] = nr
+			key := lib.CoordsToPointKey(idx, i)
+			p.octopuses[key] = nr
+			p.origPusses[key] = nr
 		}
 	}
-
-	fmt.Printf("octopuses: %#v\n", p.octopuses)
 }
 
 func (p *Day11) increase() {
-	for y := 0; y < len(p.octopuses); y++ {
-		for x := 0; x < len(p.octopuses[y]); x++ {
-			p.octopuses[y][x] += 1
-		}
+	for key := range p.octopuses {
+		p.octopuses[key]++
 	}
 }
 
-func (p *Day11) flashSingle(x, y int) {
-	o := p.octopuses[y][x]
-	if o == 0 {
+func (p *Day11) flashSingle(key lib.PointKey) {
+	if p.octopuses[key] == 0 {
 		// already in the "flashed" state, do not flash again
 		return
 	}
 	p.flashes++
-	p.octopuses[y][x] = 0 // mark as "flashed"
+	p.octopuses[key] = 0 // mark as "flashed"
 	// flash all 8 adjacent octies:
+	point := lib.KeyToPoint(key)
 	for _, d := range p.dirs {
-		dx := x + d.X
-		dy := y + d.Y
-		if dx >= 0 && dy >= 0 && dy < len(p.octopuses) && dx < len(p.octopuses[dy]) && p.octopuses[dy][dx] > 0 {
-			p.octopuses[dy][dx]++
+		dx := point.X + d.X
+		dy := point.Y + d.Y
+		dKey := lib.CoordsToPointKey(dx, dy)
+		val, present := p.octopuses[dKey]
+		if present == true && val > 0 {
+			p.octopuses[dKey]++
 		}
 	}
 }
@@ -89,12 +90,10 @@ func (p *Day11) flashSingle(x, y int) {
 func (p *Day11) flash() {
 	for {
 		runAgain := false
-		for y := 0; y < len(p.octopuses); y++ {
-			for x := 0; x < len(p.octopuses[y]); x++ {
-				if p.octopuses[y][x] > 9 {
-					runAgain = true
-					p.flashSingle(x, y)
-				}
+		for key := range p.octopuses {
+			if p.octopuses[key] > 9 {
+				runAgain = true
+				p.flashSingle(key)
 			}
 		}
 		if runAgain == false {
@@ -104,36 +103,21 @@ func (p *Day11) flash() {
 }
 
 func (p *Day11) checkAllFlashed() bool {
-	for y := 0; y < len(p.octopuses); y++ {
-		for x := 0; x < len(p.octopuses[y]); x++ {
-			if p.octopuses[y][x] != 0 {
-				return false
-			}
+	for key := range p.octopuses {
+		if p.octopuses[key] != 0 {
+			return false
 		}
 	}
 
 	return true
 }
 
-func (p *Day11) print() {
-	for y := 0; y < len(p.octopuses); y++ {
-		for x := 0; x < len(p.octopuses[y]); x++ {
-			fmt.Printf("%v ", p.octopuses[y][x])
-		}
-		fmt.Println()
-	}
-	fmt.Println()
-}
-
 func (p *Day11) Run1() {
 	runcounter := 0
-	p.print()
 	for {
 		runcounter++
 		p.increase()
 		p.flash()
-		// p.print()
-		// fmt.Println("============================")
 
 		if runcounter >= 100 {
 			break
@@ -143,10 +127,10 @@ func (p *Day11) Run1() {
 }
 
 func (p *Day11) Run2() {
-	p.Init()
+	// reset octopusses:
+	p.octopuses = p.origPusses
 	runcounter := 0
 	p.flashes = 0
-	p.print()
 	for {
 		runcounter++
 		p.increase()
@@ -154,12 +138,6 @@ func (p *Day11) Run2() {
 		if p.checkAllFlashed() {
 			break
 		}
-		// p.print()
-		// fmt.Println("============================")
-
-		// if runcounter >= 100 {
-		// 	break
-		// }
 	}
 	p.solution2 = uint64(runcounter)
 }

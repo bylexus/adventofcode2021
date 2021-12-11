@@ -248,3 +248,29 @@ Run time:
 * Solution 2: 0.01ms
 
  (Note to self: This problem would be a great excercise for the BZT module M411 - Algos and Datastructures)
+
+
+## Day 11 - Dumbo Octopus
+
+This one remembers me of Game of Life: a mutation problem over time.
+
+Part 1 was straight forward: just implement the modification needed per step, and repeat the flashing until all
+flashes are processed. As a data structure I chose a 2d fixed array.
+
+I was in fear before I opened the 2nd part if the chosen simple data structure was not enough: I could imagine
+the following possible variations for part 2:
+
+- count flashes after an uinmaginally large numer of loops
+- there are not only 10x10 squids, but infinite in all directions
+- check when the same pattern appears again
+
+But nothing of that sort was asked, it was much simpler. So I could go with my 2d array,
+but I decided to add some "sugar" to my library, and introduded a Point structure with X/Y values, and methods to
+create a hash key from coords, and coords from a hash key.
+
+Then I used a coord map as data structure, just for the sake of it :-)
+
+Run times:
+
+* Solution 1: 1.8ms
+* Solution 2: 6ms
