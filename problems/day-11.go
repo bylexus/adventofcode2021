@@ -4,7 +4,7 @@ package problems
 // AOC 2021
 // ----------
 //
-// Day 11 - xxx
+// Day 11 - Dumbo Octopus
 // ----------------------------------------------------------------------------
 
 import (
@@ -26,7 +26,7 @@ type Day11 struct {
 }
 
 func (p *Day11) GetName() string {
-	return "AoC 2021 - Day 11 - xxx"
+	return "AoC 2021 - Day 11 - Dumbo Octopus"
 }
 
 func (p *Day11) Init() {
