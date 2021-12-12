@@ -20,10 +20,9 @@ type Day12Edge struct {
 }
 
 type Day12Cave struct {
-	name            string
-	remainingVisits int
-	initialVisits   int
-	big             bool
+	name    string
+	visited bool
+	big     bool
 }
 
 type Day12 struct {
@@ -49,8 +48,8 @@ func (p *Day12) Init() {
 	p.caves = make(map[string]*Day12Cave)
 
 	for _, line := range lines {
-		cave1 := Day12Cave{name: line[0], remainingVisits: 1, initialVisits: 1}
-		cave2 := Day12Cave{name: line[1], remainingVisits: 1, initialVisits: 1}
+		cave1 := Day12Cave{name: line[0], visited: false}
+		cave2 := Day12Cave{name: line[1], visited: false}
 		p.caves[line[0]] = &cave1
 		p.caves[line[1]] = &cave2
 		if strings.ToUpper(cave1.name) == cave1.name {
@@ -87,7 +86,7 @@ func (p *Day12) findNextCaves(cave *Day12Cave) []string {
 				caves = append(caves, otherCave.name)
 			} else if otherCave.big == true {
 				caves = append(caves, otherCave.name)
-			} else if otherCave.remainingVisits > 0 {
+			} else if otherCave.visited == false {
 				caves = append(caves, otherCave.name)
 			}
 		}
@@ -97,15 +96,14 @@ func (p *Day12) findNextCaves(cave *Day12Cave) []string {
 
 func (p *Day12) resetAllCaves() {
 	for _, cave := range p.caves {
-		cave.remainingVisits = 1
-		cave.initialVisits = 1
+		cave.visited = false
 	}
 }
 
 func (p *Day12) resetCaves(caves []string) {
 	for _, cave := range caves {
 		// p.caves[cave].remainingVisits = p.caves[cave].initialVisits
-		p.caves[cave].remainingVisits = 1
+		p.caves[cave].visited = false
 		// p.caves[cave].remainingVisits++
 		// p.caves[cave].remainingVisits = lib.MinInt(p.caves[cave].remainingVisits, p.caves[cave].initialVisits)
 	}
@@ -115,7 +113,7 @@ func (p *Day12) resetCaves(caves []string) {
 // and returns an array of paths (array of array of cave names)
 // possible to the end
 func (p *Day12) walk(cave *Day12Cave) [][]string {
-	cave.remainingVisits--
+	cave.visited = true
 	nextCaves := p.findNextCaves(cave)
 	paths := make([][]string, 0)
 	for _, next := range nextCaves {
@@ -164,7 +162,7 @@ func (p *Day12) Run2() {
 	for _, cave := range p.caves {
 		p.resetAllCaves()
 		if cave.big == false && cave.name != "start" && cave.name != "end" {
-			virtualCave := Day12Cave{name: "xxxxxxxx", remainingVisits: 1, initialVisits: 1}
+			virtualCave := Day12Cave{name: "xxxxxxxx", visited: false}
 			caveEdges := make([]*Day12Edge, 0)
 			for _, edge := range p.edges {
 				if edge.cave1 == cave.name {
