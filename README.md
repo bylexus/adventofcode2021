@@ -274,3 +274,23 @@ Run times:
 
 * Solution 1: 1.8ms
 * Solution 2: 6ms
+
+## Day 12 - Passage Pathing
+
+This one was a bit harder. At first sight, this seemed like a simple graph walk thing.
+For the first part, this was correct. The only twist was the rule that large caves can be re-visited.
+This made the bookkeeping of visited nodes a bit harder. I had to reset sub-parts of the graph for the next
+run, which took me some time.
+
+Then the 2nd part made it harder again, as I didn't expect re-visiting a single node 2 times...
+So I introduced a little trick: Instead of adapting the algorithm, I simply added a "virtual" cave (a copy of a small cave)
+to the graph, and ran it (separately for each small cave). This way, the algorithm could stay the same,
+while I just had to fiddle a bit with the virtual copy.
+
+Also, because now I had the paths through the graph for multiple runs, I had to remove double paths, which I did by create a unique set
+of path hashes.
+
+I'm not completely satisfied with the run times this time:
+
+* Solution 1: 17ms
+* Solution 2: 1.8s --> almost too much for my goal...

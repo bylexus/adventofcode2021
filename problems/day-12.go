@@ -4,7 +4,7 @@ package problems
 // AOC 2021
 // ----------
 //
-// Day 12 - xxx
+// Day 12 - Passage Pathing
 // ----------------------------------------------------------------------------
 
 import (
@@ -34,7 +34,7 @@ type Day12 struct {
 }
 
 func (p *Day12) GetName() string {
-	return "AoC 2021 - Day 12 - xxx"
+	return "AoC 2021 - Day 12 - Passage Pathing"
 }
 
 func (p *Day12) Init() {
@@ -62,11 +62,13 @@ func (p *Day12) Init() {
 	}
 }
 
+// finds the neighbour caves of the given cave
+// which are still open for visit.
+// a cave is still visitable if:
+// - it's the end cave
+// - it's a big cave
+// - it's a non-visited small cave
 func (p *Day12) findNextCaves(cave *Day12Cave) []string {
-	// a cave is possible if:
-	// - it's the end cave
-	// - it's a big cave
-	// - it's a non-visited small cave
 	caves := make([]string, 0)
 	for _, edge := range p.edges {
 		var other string
@@ -102,16 +104,17 @@ func (p *Day12) resetAllCaves() {
 
 func (p *Day12) resetCaves(caves []string) {
 	for _, cave := range caves {
-		// p.caves[cave].remainingVisits = p.caves[cave].initialVisits
 		p.caves[cave].visited = false
-		// p.caves[cave].remainingVisits++
-		// p.caves[cave].remainingVisits = lib.MinInt(p.caves[cave].remainingVisits, p.caves[cave].initialVisits)
 	}
 }
 
 // takes a cave, walks through the end,
 // and returns an array of paths (array of array of cave names)
 // possible to the end
+// This is a recursive graph walk algorithm, with a twist:
+// before walking each sub-path, we have to reset the
+// caves from the last sub-path (visit status), as they will
+// possibly be visited again.
 func (p *Day12) walk(cave *Day12Cave) [][]string {
 	cave.visited = true
 	nextCaves := p.findNextCaves(cave)
@@ -122,7 +125,6 @@ func (p *Day12) walk(cave *Day12Cave) [][]string {
 			paths = append(paths, []string{"end"})
 		} else {
 			subpaths := p.walk(nextCave)
-			// fmt.Printf("Subpaths: %#v\n", subpaths)
 			if len(subpaths) > 0 {
 				for _, s := range subpaths {
 					s = append([]string{nextCave.name}, s...)
@@ -135,33 +137,29 @@ func (p *Day12) walk(cave *Day12Cave) [][]string {
 	return paths
 }
 
-func (p *Day12) printPath(paths []string) {
-	fmt.Print("start, ")
-	for _, path := range paths {
-		fmt.Printf("%v, ", path)
-	}
-	fmt.Println()
-}
-
 func (p *Day12) Run1() {
 	start := p.caves["start"]
 	paths := p.walk(start)
-	// for i, path := range paths {
-	// 	fmt.Printf("%v: ", i+1)
-	// 	p.printPath(path)
-	// }
-
 	p.solution1 = len(paths)
 }
 
 func (p *Day12) Run2() {
-	// do it for each small cave,
-	// with another small cave as 2 times visible:
+	// for the 2nd part, I use a little hack:
+	// for each small cave, I re-run the evaluation again and collect the paths.
+	// In each run, I add a copy of a single small cave, which then acts as a
+	// "2nd visit" cave. So instead of adopting the walking algorithm, I simply
+	// trick it for a single cave.
 	allPaths := make([][]string, 0)
 	nrOfEdges := len(p.edges)
+
 	for _, cave := range p.caves {
-		p.resetAllCaves()
 		if cave.big == false && cave.name != "start" && cave.name != "end" {
+			// for each small cave, we run the graph walk, but with an additional
+			// small cave
+			p.resetAllCaves()
+
+			// creating a copy of the actual small cave, including edges that point to it:
+			// we give it a unique name, so that it can be addressed in the cave map:
 			virtualCave := Day12Cave{name: "xxxxxxxx", visited: false}
 			caveEdges := make([]*Day12Edge, 0)
 			for _, edge := range p.edges {
@@ -174,8 +172,12 @@ func (p *Day12) Run2() {
 			p.edges = append(p.edges, caveEdges...)
 			p.caves[virtualCave.name] = &virtualCave
 
+			// copy done, now do the graph walk:
 			start := p.caves["start"]
 			paths := p.walk(start)
+
+			// now the returned paths contain the virtual name instead of the real (originam) name.
+			// we have to replace the virtual name in the paths with the original one:
 			for i, path := range paths {
 				for j, part := range path {
 					if part == virtualCave.name {
@@ -183,20 +185,24 @@ func (p *Day12) Run2() {
 					}
 				}
 			}
+			// add the paths from this run to our path memory:
 			allPaths = append(allPaths, paths...)
 
-			// remove additional edges:
+			// remove additional edges and delete the virtual node for the next run:
 			p.edges = p.edges[:nrOfEdges]
 			delete(p.caves, virtualCave.name)
 		}
 	}
 
+	// now we have to filter duplicate paths: I simply hash the paths and add it to a map,
+	// to create a "set" of paths:
 	pathMap := make(map[string][]string)
 	for _, path := range allPaths {
 		key := fmt.Sprintf("%#v", path)
 		pathMap[key] = path
 	}
 
+	// voilà:
 	p.solution2 = len(pathMap)
 }
 
