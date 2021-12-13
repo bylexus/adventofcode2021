@@ -30,6 +30,7 @@ func main() {
 	problemMap["day10"] = &problems.Day10{}
 	problemMap["day11"] = &problems.Day11{}
 	problemMap["day12"] = &problems.Day12{}
+	problemMap["day13"] = &problems.Day13{}
 
 	problem, defined := problemMap[problemName]
 	if defined == true {

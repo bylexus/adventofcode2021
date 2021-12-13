@@ -294,3 +294,18 @@ I'm not completely satisfied with the run times this time:
 
 * Solution 1: 17ms
 * Solution 2: 1.8s --> almost too much for my goal...
+
+
+## Day 13 - Transparent Origami
+
+I have the feeling that this year is definitively easier than the last years...
+Today's problem reminded me of the start map problem some years (?) ago,
+where you have to move stars until they form a password. But this year's problem was MUCH easier
+to solve.
+
+So almost a no-brainer, using a map for coordinates has again proven to be a much more efficient solution that an x/y array.
+
+Run times:
+
+* Solution 1: 0.06ms
+* Solution 2: 0.42ms
