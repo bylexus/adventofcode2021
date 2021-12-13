@@ -305,7 +305,15 @@ to solve.
 
 So almost a no-brainer, using a map for coordinates has again proven to be a much more efficient solution that an x/y array.
 
+In a refactoring attempt, I tried if I can use the point struct itself as map key,
+and yes, this works, as long as the struct only contains comparable types!
+
+This is really helpful, as I don't have to create a key hash!
+
+Unfortunately this took me until to day 13 to realize...
+
 Run times:
 
 * Solution 1: 0.06ms
-* Solution 2: 0.42ms
+* Solution 2: 0.38ms
+

@@ -15,7 +15,7 @@ import (
 	"alexi.ch/aoc2021/lib"
 )
 
-type Day13Map map[lib.PointKey]lib.Point
+type Day13Map map[lib.Point]lib.Point
 
 type Day13 struct {
 	solution1 int
@@ -53,7 +53,7 @@ func (p *Day13) Init() {
 					panic(err)
 				}
 				newPoint := lib.Point{X: x, Y: y}
-				p.pointMap[newPoint.HashKey()] = newPoint
+				p.pointMap[newPoint] = newPoint
 
 				p.maxX = lib.MaxInt(p.maxX, x)
 				p.maxY = lib.MaxInt(p.maxY, y)
@@ -89,7 +89,7 @@ func (p *Day13) printMap() string {
 
 	for y := 0; y <= maxY; y++ {
 		for x := 0; x <= maxX; x++ {
-			_, defined := p.pointMap[lib.CoordsToPointKey(x, y)]
+			_, defined := p.pointMap[lib.Point{X: x, Y: y}]
 			if defined {
 				out += fmt.Sprint("█")
 			} else {
@@ -111,7 +111,7 @@ func (p *Day13) fold(foldPoint lib.Point) {
 			delete(p.pointMap, key)
 			point.Y = 2*foldPoint.Y - point.Y
 		}
-		p.pointMap[point.HashKey()] = point
+		p.pointMap[point] = point
 	}
 }
 
