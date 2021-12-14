@@ -317,3 +317,30 @@ Run times:
 * Solution 1: 0.06ms
 * Solution 2: 0.38ms
 
+## Day 14 - Extended Polymerization
+
+That one was a bit tricky - The naïve solution, which worked fine for part one, just exploded into my face
+in part 2 :-)
+
+I first tried to form the whole polymer chain completely - absolutely fine for part 1. In part 2, this exploded,
+as this is an exponentially growing problem. So a better solution was needed.
+
+I had a moment until it dawns me: I can keep a "pair count", and just count the chars inserted into each pair:
+
+Example: 
+start: NNCB --> forms pairs NN, NC, CB, each 1 time. Also, we have a char count of N = 2, C = 1, B = 1.
+
+now we process the rules, e.g.:
+CH -> B: Nothing happens: CH does not exist as a pair yet, so nothing to insert.
+NN -> C :
+     - For each existing pair NN, C is inserted (increase the C count NN times)
+     - Additionally, All NN pairs are broken up into 2 NEW pairs NC, CN, also NN times.
+After all rules are processed in one run, add the newly added pairs to the pair map.
+... loop
+
+in the end I have a map of single chars => counts, voila.
+
+Runs pretty fast :-)
+
+* Solution 1: 0.36ms
+* Solution 2: 1.45ms
