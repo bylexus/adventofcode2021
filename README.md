@@ -344,3 +344,16 @@ Runs pretty fast :-)
 
 * Solution 1: 0.36ms
 * Solution 2: 1.45ms
+
+## Day 15 - Chiton
+
+This one screamed "Dijkstra!", and indeed that was the solution here.
+I just implemented a straight-forward dijkstra for both solutions.
+
+The most time I spend was to enlarge the grid in the 2nd part :-) until I noticed
+that "wrapping around" the risk levels was not just a modulo, but started with 1 again.... Grrr...
+
+Run times:
+
+* Solution 1: 35ms
+* Solution 2: 3166ms, including grid enlargement process
