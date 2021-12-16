@@ -17,6 +17,17 @@ I use this year's event to learn a small bit of GO. Here are my conclusions so f
   unwanted behaviour: e.g. if you pass a Struct by value, it is copied into the function. This MAY be an advantage, but
   for me, it is annoying most of the time (as the struct will need to be modified within the function).
 
+Around Day 15 I noticed that I got more proficient with GO. I know how to best build
+data structures, I know how call by value / by reference works etc.
+It became clear to me that the key to GO lies in the "implicit" types:
+So if it walks like a duck, and talks like a duck, it must be a duck. That makes
+things easier.
+
+What I find hard to unserstand or to handle is to find out IF it is a duck: because
+there is no explicit interface declaration for a certain type (it is not neccessary
+to declare "Type A implements Interface B", just implement the methods), it's hard
+to find out if a certain type can be used as "Duck"... I like explicity in programming languages...
+
 ## Preparations
 
 Today I set up a generic structure for all problems: Each problem will be defined as a struct that implements the following interface:
@@ -357,3 +368,21 @@ Run times:
 
 * Solution 1: 35ms
 * Solution 2: 3166ms, including grid enlargement process
+
+## Day 16 - Packet Decoder
+
+OK, this is the parser / AST day :-) So we had to read a stream of bits, which form
+single "packages" with a header and data (which can be sub-packages).
+
+The first part was to parse the stream into packets (aka "Tokens"), and form a package tree (aka Abstract Syntax Tree).
+
+Then the 2nd part was simply walking the AST and evaluate. Fin.
+
+I loose much time in correctly interpreting the package structure: types and versions can be 0, too, I figured out too late :-)
+
+All in all a nice little parsing and evaluating problem.
+
+Run times:
+
+* Solution 1: 0.14ms
+* Solution 2: 0.0037ms

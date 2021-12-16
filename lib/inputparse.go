@@ -161,3 +161,21 @@ func ArrayContains(check interface{}, arr []interface{}) bool {
 	}
 	return false
 }
+
+// StackOverflow: https://stackoverflow.com/a/43004689
+func AsBits(val uint64, nrOfBits int) []uint64 {
+	bits := []uint64{}
+	for i := 0; i < nrOfBits; i++ {
+		bits = append([]uint64{val & 0x1}, bits...)
+		val = val >> 1
+	}
+	return bits
+}
+
+func BitsToUint64(bits []uint64) uint64 {
+	var nr uint64 = 0
+	for _, bit := range bits {
+		nr = (nr << 1) | bit
+	}
+	return nr
+}
