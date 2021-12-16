@@ -14,11 +14,12 @@ import (
 	"alexi.ch/aoc2021/lib"
 )
 
-type Day16Msg []uint64
+type Day16Msg []uint8
 
 // ---------------------------- common interface for package types -----------------------------
 type Day16Packet interface {
 	toString() string
+	toFormula() string
 	versionSum() uint64
 	evaluate() uint64
 }
@@ -31,6 +32,10 @@ type Day16LiteralPacket struct {
 
 func (p *Day16LiteralPacket) toString() string {
 	return fmt.Sprintf("version: %v, type: literal, value: %v\n", p.version, p.value)
+}
+
+func (p *Day16LiteralPacket) toFormula() string {
+	return fmt.Sprint(p.value)
 }
 
 func (p *Day16LiteralPacket) versionSum() uint64 {
@@ -129,6 +134,56 @@ func (p *Day16OperatorPacket) evaluate() uint64 {
 	}
 }
 
+func (p *Day16OperatorPacket) toFormula() string {
+	switch p.ptype {
+	case 0: // sum package
+		str := p.subpackets[0].toFormula()
+		if len(p.subpackets) > 1 {
+			for _, sub := range p.subpackets[1:] {
+				str += " + " + sub.toFormula()
+			}
+		}
+		return fmt.Sprintf("(%v)", str)
+
+	case 1: // product package
+		str := p.subpackets[0].toFormula()
+		if len(p.subpackets) > 1 {
+			for _, sub := range p.subpackets[1:] {
+				str += " * " + sub.toFormula()
+			}
+		}
+		return fmt.Sprintf("(%v)", str)
+
+	case 2: // minimum package
+		str := p.subpackets[0].toFormula()
+		if len(p.subpackets) > 1 {
+			for _, sub := range p.subpackets[1:] {
+				str += "," + sub.toFormula()
+			}
+		}
+		return fmt.Sprintf("min(%s)", str)
+
+	case 3: // maximum package
+		str := p.subpackets[0].toFormula()
+		if len(p.subpackets) > 1 {
+			for _, sub := range p.subpackets[1:] {
+				str += "," + sub.toFormula()
+			}
+		}
+		return fmt.Sprintf("max(%s)", str)
+
+	case 5: // gt (>) package
+		return fmt.Sprintf("(%s > %s)?", p.subpackets[0].toFormula(), p.subpackets[1].toFormula())
+
+	case 6: // lt (<) package
+		return fmt.Sprintf("(%s < %s)?", p.subpackets[0].toFormula(), p.subpackets[1].toFormula())
+	case 7: // ==  package
+		return fmt.Sprintf("(%s == %s)?", p.subpackets[0].toFormula(), p.subpackets[1].toFormula())
+	default:
+		panic("Unknown package!")
+	}
+}
+
 // ---------------------------------------------------------
 type Day16 struct {
 	solution1  uint64
@@ -157,7 +212,7 @@ func (p *Day16) Init() {
 	// line := lines[3]
 	line := lines[0]
 
-	// p.msg is an array of 0 / 1 values (ok, uint64 is a bit overstretched, but hey, we have it :-)
+	// p.msg is an array of 0 / 1 values, as uint8
 	p.msg = make(Day16Msg, 0)
 	for _, i := range line {
 		bits, err := strconv.ParseUint(string(i), 16, 4)
@@ -178,7 +233,7 @@ func (p *Day16) Init() {
 func (m Day16Msg) readLiteralPackage(pt uint64) (*Day16LiteralPacket, uint64) {
 	last := false
 	var value uint64 = 0
-	valueBits := make([]uint64, 0)
+	valueBits := make([]uint8, 0)
 	for {
 		if m[pt] == 0 {
 			last = true
@@ -345,5 +400,6 @@ func (p *Day16) GetSolution1() string {
 }
 
 func (p *Day16) GetSolution2() string {
+	fmt.Printf("Formula:\n\n%s\n\n", p.packetTree[0].toFormula())
 	return fmt.Sprintf("%v\n", p.solution2)
 }

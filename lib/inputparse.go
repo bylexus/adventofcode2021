@@ -163,19 +163,19 @@ func ArrayContains(check interface{}, arr []interface{}) bool {
 }
 
 // StackOverflow: https://stackoverflow.com/a/43004689
-func AsBits(val uint64, nrOfBits int) []uint64 {
-	bits := []uint64{}
+func AsBits(val uint64, nrOfBits int) []uint8 {
+	bits := []uint8{}
 	for i := 0; i < nrOfBits; i++ {
-		bits = append([]uint64{val & 0x1}, bits...)
+		bits = append([]uint8{uint8(val & 0x1)}, bits...)
 		val = val >> 1
 	}
 	return bits
 }
 
-func BitsToUint64(bits []uint64) uint64 {
+func BitsToUint64(bits []uint8) uint64 {
 	var nr uint64 = 0
 	for _, bit := range bits {
-		nr = (nr << 1) | bit
+		nr = (nr << 1) | uint64(bit)
 	}
 	return nr
 }
