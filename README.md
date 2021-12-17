@@ -386,3 +386,17 @@ Run times:
 
 * Solution 1: 0.14ms
 * Solution 2: 0.0037ms
+
+## Day 17 - Trick Shot
+
+First, I tried to calculate things mathematically - which I'm sure is possible, if you are smart enough - I am not!
+
+So I did it the brute-force way: just tried different start velocities for x/y direction, and simulated the 
+shot's steps.
+
+For the start y velocity, I just implied that this will not need to be larger than 500.... And it worked.
+
+Run times:
+
+* Solution 1: 5.7ms (no optimizations)
+* Solution 2: 0 (could be done in run 1 already)
