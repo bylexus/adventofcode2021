@@ -400,6 +400,5 @@ func (p *Day16) GetSolution1() string {
 }
 
 func (p *Day16) GetSolution2() string {
-	fmt.Printf("Formula:\n\n%s\n\n", p.packetTree[0].toFormula())
 	return fmt.Sprintf("%v\n", p.solution2)
 }

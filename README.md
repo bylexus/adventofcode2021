@@ -400,3 +400,28 @@ Run times:
 
 * Solution 1: 5.7ms (no optimizations)
 * Solution 2: 0 (could be done in run 1 already)
+
+## Day 18 - Snailfish
+
+Phew.... That was the hardest one so far.... It seemed like a relatively simple
+tree traversal problem, but boy, was I wrong :-))
+
+The biggest problem here was: The structure itself is a tree, but you have to 
+treat it as flat list for adapting the reductions.
+
+So I lost a great amount of time to implement the reduce() method.
+
+In the end I settled to a relatively simple solution:
+
+1. for reducing the tree, I flattened it to a list
+2. then I startet looking for rules that apply from the beginning
+3. as soon as a rule matched, I executed it and start over again
+4. until nothing was to be done in a loop.
+
+My solution is somewhat ineffective, as I have to create / copy a lot of arrays...
+
+So my run times exploded:
+
+* Solution 1: 140ms
+* Solution 1: 2051ms :-(
+

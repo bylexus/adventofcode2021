@@ -43,7 +43,6 @@ func (p *Day07) Init() {
 
 func (p *Day07) Run1() {
 	var minFuel uint64 = math.MaxUint64
-	var minFuelPos uint64 = 0
 	var fueldiff uint64 = 0
 	for pos := p.inMin; pos <= p.inMax; pos++ {
 		fueldiff = 0
@@ -52,17 +51,13 @@ func (p *Day07) Run1() {
 		}
 		if fueldiff < minFuel {
 			minFuel = fueldiff
-			minFuelPos = pos
 		}
 	}
-	fmt.Printf("Position: %v\n", minFuelPos)
-
 	p.solution1 = minFuel
 }
 
 func (p *Day07) Run2() {
 	var minFuel uint64 = math.MaxUint64
-	var minFuelPos uint64 = 0
 	var fueldiff uint64 = 0
 	for pos := p.inMin; pos <= p.inMax; pos++ {
 		fueldiff = 0
@@ -74,10 +69,8 @@ func (p *Day07) Run2() {
 		}
 		if fueldiff < minFuel {
 			minFuel = fueldiff
-			minFuelPos = pos
 		}
 	}
-	fmt.Printf("Position: %v\n", minFuelPos)
 
 	p.solution2 = minFuel
 }

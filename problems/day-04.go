@@ -155,7 +155,6 @@ func (p *Day04) Run1() {
 				// mark board as won for the 2nd part of the puzzle:
 				p.boardsWon[i] = true
 				sum := p.sumUnmarked(board)
-				fmt.Printf("sum unmarked: %v, last draw: %v\n", sum, draw)
 				p.solution1 = sum * draw
 				return
 			}
@@ -184,7 +183,6 @@ func (p *Day04) Run2() {
 					// yes, last board that won:
 					if nrOfBoardsWon == len(p.boards) {
 						sum := p.sumUnmarked(board)
-						fmt.Printf("sum unmarked: %v, last draw: %v\n", sum, draw)
 						p.solution2 = sum * draw
 						return
 					}

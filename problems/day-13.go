@@ -124,8 +124,7 @@ func (p *Day13) Run2() {
 	for _, fold := range p.folds[1:] {
 		p.fold(fold)
 	}
-	fmt.Println(p.printMap())
-	p.solution2 = "\n"
+	p.solution2 = fmt.Sprintln(p.printMap())
 }
 
 func (p *Day13) GetSolution1() string {

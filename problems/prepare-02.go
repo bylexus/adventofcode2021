@@ -79,9 +79,9 @@ func (p *Prepare02) Run2() {
 }
 
 func (p *Prepare02) GetSolution1() string {
-	return fmt.Sprintf("%v", p.solution1)
+	return fmt.Sprintf("%v\n", p.solution1)
 }
 
 func (p *Prepare02) GetSolution2() string {
-	return fmt.Sprintf("%v", p.solution2)
+	return fmt.Sprintf("%v\n", p.solution2)
 }
