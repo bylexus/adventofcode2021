@@ -191,26 +191,87 @@ func (n *Day18Pair) toArr() []Day18Node {
 	return arr
 }
 
-// finds nearest value "left of" the given element
-func (n *Day18Pair) findLeftOf(val *Day18Value) *Day18Value {
-	vals := n.root().toValueArr()
-	for i, v := range vals {
-		if v == val && i > 0 {
-			return vals[i-1]
+func (n *Day18Pair) walkLeftToRightToStopnode(node *Day18Pair, stopValue *Day18Value, lastValue *Day18Value) (bool, *Day18Value) {
+	var found bool = false
+	switch node.leftNode.(type) {
+	case *Day18Pair:
+		n := node.leftNode.(*Day18Pair)
+		found, lastValue = n.walkLeftToRightToStopnode(n, stopValue, lastValue)
+		if found == true {
+			return found, lastValue
+		}
+	case *Day18Value:
+		n := node.leftNode.(*Day18Value)
+		if n == stopValue {
+			return true, lastValue
+		} else {
+			lastValue = n
 		}
 	}
-	return nil
+
+	switch node.rightNode.(type) {
+	case *Day18Pair:
+		n := node.rightNode.(*Day18Pair)
+		found, lastValue = n.walkLeftToRightToStopnode(n, stopValue, lastValue)
+		return found, lastValue
+	case *Day18Value:
+		n := node.rightNode.(*Day18Value)
+		if n == stopValue {
+			return true, lastValue
+		} else {
+			return false, n
+		}
+	}
+
+	return false, lastValue
+}
+
+func (n *Day18Pair) findFirstNodeRighOfStartNode(node *Day18Pair, startValue *Day18Value, foundStart bool) (found bool, result *Day18Value) {
+	switch node.leftNode.(type) {
+	case *Day18Pair:
+		n := node.leftNode.(*Day18Pair)
+		foundStart, result = n.findFirstNodeRighOfStartNode(n, startValue, foundStart)
+		if foundStart == true && result != nil {
+			return foundStart, result
+		}
+	case *Day18Value:
+		n := node.leftNode.(*Day18Value)
+		if n == startValue {
+			return true, nil
+		} else if foundStart == true {
+			return foundStart, n
+		}
+	}
+
+	switch node.rightNode.(type) {
+	case *Day18Pair:
+		n := node.rightNode.(*Day18Pair)
+		foundStart, result = n.findFirstNodeRighOfStartNode(n, startValue, foundStart)
+		if foundStart == true && result != nil {
+			return foundStart, result
+		}
+	case *Day18Value:
+		n := node.rightNode.(*Day18Value)
+		if n == startValue {
+			return true, nil
+		} else if foundStart {
+			return foundStart, n
+		}
+	}
+
+	return foundStart, nil
+}
+
+// finds nearest value "left of" the given element
+func (n *Day18Pair) findLeftOf(val *Day18Value) *Day18Value {
+	_, node := n.walkLeftToRightToStopnode(n.root(), val, nil)
+	return node
 }
 
 // finds nearest value "right of" the given element
 func (n *Day18Pair) findRightOf(val *Day18Value) *Day18Value {
-	vals := n.root().toValueArr()
-	for i, v := range vals {
-		if v == val && i < len(vals)-1 {
-			return vals[i+1]
-		}
-	}
-	return nil
+	_, node := n.findFirstNodeRighOfStartNode(n.root(), val, false)
+	return node
 }
 
 // runs reduceAll until all is done,
