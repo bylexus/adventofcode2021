@@ -34,7 +34,7 @@ type Day12 struct {
 }
 
 func (p *Day12) GetName() string {
-	return "AoC 2021 - Day 12 - Passage Pathing"
+	return "Passage Pathing"
 }
 
 func (p *Day12) Init() {

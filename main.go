@@ -1,23 +1,23 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"sync"
 	"time"
 
 	"alexi.ch/aoc2021/lib"
+	"alexi.ch/aoc2021/lib/types"
 	"alexi.ch/aoc2021/problems"
 )
 
-type Problems map[string]problems.AocProblem
+type Problems map[string]types.AocProblem
 
 type Durations struct {
 	duration1 time.Duration
 	duration2 time.Duration
 }
 
-func runProblem(problem problems.AocProblem) (duration Durations) {
+func runProblem(problem types.AocProblem) (duration Durations) {
 	problem.Init()
 	duration.duration1 = lib.MeasureTime(problem.Run1)
 	duration.duration2 = lib.MeasureTime(problem.Run2)
@@ -26,29 +26,40 @@ func runProblem(problem problems.AocProblem) (duration Durations) {
 
 func runAll(probs Problems) {
 	wg := sync.WaitGroup{}
-	var totalRuntime1 time.Duration
-	var totalRuntime2 time.Duration
-	var totalRuntime time.Duration
-	for _, problem := range probs {
+	results := make([]types.AoCResult, 0, 25)
+	resultChan := make(chan types.AoCResult)
+	start := time.Now()
+
+	for key, problem := range probs {
 		wg.Add(1)
-		go func(p problems.AocProblem) {
+		go func(p types.AocProblem, k string) {
 			p.Init()
 			d := runProblem(p)
-			fmt.Printf("%v done.\n", p.GetName())
-			fmt.Printf("* Solution 1: after %v: %v", d.duration1, p.GetSolution1())
-			fmt.Printf("* Solution 2: after %v: %v", d.duration2, p.GetSolution2())
-			totalRuntime1 += d.duration1
-			totalRuntime2 += d.duration2
-			totalRuntime += d.duration1 + d.duration2
+			res := types.AoCResult{
+				Problem:       p,
+				Key:           k,
+				TimeSolution1: d.duration1,
+				TimeSolution2: d.duration2,
+			}
+			resultChan <- res
 			wg.Done()
-		}(problem)
-		fmt.Printf("%v started\n", problem.GetName())
+		}(problem, key)
 	}
-	wg.Wait()
 
-	fmt.Printf("Total runtime Problems 1: %v\n", totalRuntime1)
-	fmt.Printf("Total runtime Problems 2: %v\n", totalRuntime2)
-	fmt.Printf("TOTAL runtime over all  : %v\n", totalRuntime)
+	// collect results:
+	doneChannel := make(chan bool)
+	go func() {
+		for res := range resultChan {
+			results = append(results, res)
+		}
+		close(doneChannel)
+	}()
+	wg.Wait()
+	totalDuration := time.Since(start)
+	close(resultChan)
+	<-doneChannel
+
+	lib.OutputResultList(results, totalDuration)
 }
 
 func main() {
@@ -59,8 +70,8 @@ func main() {
 	problemName := os.Args[1]
 
 	problemMap := make(Problems)
-	problemMap["prepare01"] = &problems.Prepare01{}
-	problemMap["prepare02"] = &problems.Prepare02{}
+	// problemMap["prepare01"] = &problems.Prepare01{}
+	// problemMap["prepare02"] = &problems.Prepare02{}
 
 	problemMap["day01"] = &problems.Day01{}
 	problemMap["day02"] = &problems.Day02{}

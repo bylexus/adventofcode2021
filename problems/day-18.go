@@ -316,7 +316,7 @@ type Day18 struct {
 }
 
 func (p *Day18) GetName() string {
-	return "AoC 2021 - Day 18 - Snailfish"
+	return "Snailfish"
 }
 
 // pair string is always [...,...].

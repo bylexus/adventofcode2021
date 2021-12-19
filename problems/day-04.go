@@ -38,7 +38,7 @@ type Day04 struct {
 }
 
 func (p *Day04) GetName() string {
-	return "AoC 2021 - Day 4 - Giant Squid"
+	return "Giant Squid"
 }
 
 func (p *Day04) Init() {

@@ -13,23 +13,24 @@ import (
 	"strings"
 
 	"alexi.ch/aoc2021/lib"
+	"alexi.ch/aoc2021/lib/types"
 )
 
-type Day13Map map[lib.Point]lib.Point
+type Day13Map map[types.Point]types.Point
 
 type Day13 struct {
 	solution1 int
 	solution2 string
 
 	pointMap Day13Map
-	folds    []lib.Point
+	folds    []types.Point
 
 	maxX int
 	maxY int
 }
 
 func (p *Day13) GetName() string {
-	return "AoC 2021 - Day 13 - Transparent Origami"
+	return "Transparent Origami"
 }
 
 func (p *Day13) Init() {
@@ -38,7 +39,7 @@ func (p *Day13) Init() {
 	lines := lib.ReadInputLines("input/day13-input.txt")
 
 	p.pointMap = make(Day13Map)
-	p.folds = make([]lib.Point, 0)
+	p.folds = make([]types.Point, 0)
 
 	for _, line := range lines {
 		if len(line) > 0 {
@@ -52,7 +53,7 @@ func (p *Day13) Init() {
 				if err != nil {
 					panic(err)
 				}
-				newPoint := lib.Point{X: x, Y: y}
+				newPoint := types.Point{X: x, Y: y}
 				p.pointMap[newPoint] = newPoint
 
 				p.maxX = lib.MaxInt(p.maxX, x)
@@ -64,7 +65,7 @@ func (p *Day13) Init() {
 				if err != nil {
 					panic(err)
 				}
-				p.folds = append(p.folds, lib.Point{X: 0, Y: y})
+				p.folds = append(p.folds, types.Point{X: 0, Y: y})
 			}
 			foldInfo = strings.Split(line, "x=")
 			if len(foldInfo) == 2 {
@@ -72,7 +73,7 @@ func (p *Day13) Init() {
 				if err != nil {
 					panic(err)
 				}
-				p.folds = append(p.folds, lib.Point{X: x, Y: 0})
+				p.folds = append(p.folds, types.Point{X: x, Y: 0})
 			}
 		}
 	}
@@ -89,7 +90,7 @@ func (p *Day13) printMap() string {
 
 	for y := 0; y <= maxY; y++ {
 		for x := 0; x <= maxX; x++ {
-			_, defined := p.pointMap[lib.Point{X: x, Y: y}]
+			_, defined := p.pointMap[types.Point{X: x, Y: y}]
 			if defined {
 				out += fmt.Sprint("█")
 			} else {
@@ -102,7 +103,7 @@ func (p *Day13) printMap() string {
 	return out
 }
 
-func (p *Day13) fold(foldPoint lib.Point) {
+func (p *Day13) fold(foldPoint types.Point) {
 	for key, point := range p.pointMap {
 		if foldPoint.X > 0 && point.X > foldPoint.X {
 			delete(p.pointMap, key)

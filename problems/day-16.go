@@ -193,7 +193,7 @@ type Day16 struct {
 }
 
 func (p *Day16) GetName() string {
-	return "AoC 2021 - Day 16 - Packet Decoder"
+	return "Packet Decoder"
 }
 
 func (p *Day16) Init() {

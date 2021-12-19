@@ -9,26 +9,6 @@ import (
 	"strings"
 )
 
-const hashKeyMultiplier int = 10000000
-
-type PointKey int
-type Point struct {
-	X int
-	Y int
-}
-
-func (p Point) HashKey() PointKey {
-	return PointKey(p.Y*hashKeyMultiplier + p.X)
-}
-
-func KeyToPoint(key PointKey) Point {
-	return Point{Y: int(key) / hashKeyMultiplier, X: int(key) % hashKeyMultiplier}
-}
-
-func CoordsToPointKey(x int, y int) PointKey {
-	return PointKey(y*hashKeyMultiplier + x)
-}
-
 //
 // Reads a file into a slice of lines, and returns a slice of strings.
 func ReadInputLines(filename string) []string {

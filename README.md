@@ -65,6 +65,35 @@ The main program gets called with the day to run:
 $ go run main.go day01
 ```
 
+## Run times of all solutions
+
+```plain
+Nr.   |Title                              |    Time Part 1|    Time Part 2|     Total time
+------|-----------------------------------|---------------|---------------|---------------
+day01 |Sonar Sweep                        |        2.481µs|        3.006µs|        5.487µs
+day02 |Dive!                              |        7.182µs|         7.32µs|       14.502µs
+day03 |Binary Diagnostic                  |       81.136µs|     2.821329ms|     2.902465ms
+day04 |Giant Squid                        |      632.188µs|     1.713833ms|     2.346021ms
+day05 |Hydrothermal Venture               |     18.43038ms|     26.95379ms|     45.38417ms
+day06 |Lanternfish                        |       13.971µs|        6.776µs|       20.747µs
+day07 |The Treachery of Whales            |     4.172039ms|     6.309854ms|    10.481893ms
+day08 |Seven Segment Search               |       48.125µs|      446.089µs|      494.214µs
+day09 |Smoke Basin                        |      246.672µs|     4.419703ms|     4.666375ms
+day10 |Syntax Scoring                     |     5.066944ms|       18.782µs|     5.085726ms
+day11 |Dumbo Octopus                      |     6.596268ms|    13.213615ms|    19.809883ms
+day12 |Passage Pathing                    |    29.483121ms|    1.85672923s|   1.886212351s
+day13 |Transparent Origami                |       127.63µs|      758.774µs|      886.404µs
+day14 |Extended Polymerization            |     3.862528ms|     4.864432ms|      8.72696ms
+day15 |Chiton                             |    44.324491ms|   3.469638937s|   3.513963428s
+day16 |Packet Decoder                     |      136.618µs|        3.655µs|      140.273µs
+day17 |Trick Shot                         |     13.98944ms|          200ns|     13.98964ms
+day18 |Snailfish                          |    15.420243ms|   134.653367ms|    150.07361ms
+------------------------------------------|---------------|---------------|---------------
+Total time                                |   142.641457ms|   5.522562692s|   5.665204149s
+
+Total run time (parallel runs): 3.53026127s
+```
+
 ## Day 01 - Sonar Sweep
 
 As always, this one is just for getting us started - I used it to fine-tune my code

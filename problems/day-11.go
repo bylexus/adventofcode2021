@@ -12,21 +12,22 @@ import (
 	"strconv"
 
 	"alexi.ch/aoc2021/lib"
+	"alexi.ch/aoc2021/lib/types"
 )
 
-type Day11Octopuses map[lib.PointKey]int
+type Day11Octopuses map[types.Point]int
 
 type Day11 struct {
 	solution1  uint64
 	solution2  uint64
 	octopuses  Day11Octopuses
 	origPusses Day11Octopuses
-	dirs       []lib.Point
+	dirs       []types.Point
 	flashes    uint64
 }
 
 func (p *Day11) GetName() string {
-	return "AoC 2021 - Day 11 - Dumbo Octopus"
+	return "Dumbo Octopus"
 }
 
 func (p *Day11) Init() {
@@ -34,16 +35,16 @@ func (p *Day11) Init() {
 	// lines := lib.ReadInputLines("input/day11-test-small.txt")
 	// lines := lib.ReadInputLines("input/day11-test.txt")
 	lines := lib.ReadInputLines("input/day11-input.txt")
-	p.dirs = make([]lib.Point, 8)
+	p.dirs = make([]types.Point, 8)
 
-	p.dirs[0] = lib.Point{X: -1, Y: -1}
-	p.dirs[1] = lib.Point{X: 0, Y: -1}
-	p.dirs[2] = lib.Point{X: 1, Y: -1}
-	p.dirs[3] = lib.Point{X: -1, Y: 0}
-	p.dirs[5] = lib.Point{X: 1, Y: 0}
-	p.dirs[4] = lib.Point{X: -1, Y: 1}
-	p.dirs[6] = lib.Point{X: 0, Y: 1}
-	p.dirs[7] = lib.Point{X: 1, Y: 1}
+	p.dirs[0] = types.Point{X: -1, Y: -1}
+	p.dirs[1] = types.Point{X: 0, Y: -1}
+	p.dirs[2] = types.Point{X: 1, Y: -1}
+	p.dirs[3] = types.Point{X: -1, Y: 0}
+	p.dirs[5] = types.Point{X: 1, Y: 0}
+	p.dirs[4] = types.Point{X: -1, Y: 1}
+	p.dirs[6] = types.Point{X: 0, Y: 1}
+	p.dirs[7] = types.Point{X: 1, Y: 1}
 
 	p.octopuses = make(Day11Octopuses)
 	p.origPusses = make(Day11Octopuses)
@@ -54,7 +55,7 @@ func (p *Day11) Init() {
 			if err != nil {
 				panic(err)
 			}
-			key := lib.CoordsToPointKey(idx, i)
+			key := types.Point{X: idx, Y: i}
 			p.octopuses[key] = nr
 			p.origPusses[key] = nr
 		}
@@ -67,7 +68,7 @@ func (p *Day11) increase() {
 	}
 }
 
-func (p *Day11) flashSingle(key lib.PointKey) {
+func (p *Day11) flashSingle(key types.Point) {
 	if p.octopuses[key] == 0 {
 		// already in the "flashed" state, do not flash again
 		return
@@ -75,11 +76,11 @@ func (p *Day11) flashSingle(key lib.PointKey) {
 	p.flashes++
 	p.octopuses[key] = 0 // mark as "flashed"
 	// flash all 8 adjacent octies:
-	point := lib.KeyToPoint(key)
+	point := key
 	for _, d := range p.dirs {
 		dx := point.X + d.X
 		dy := point.Y + d.Y
-		dKey := lib.CoordsToPointKey(dx, dy)
+		dKey := types.Point{X: dx, Y: dy}
 		val, present := p.octopuses[dKey]
 		if present == true && val > 0 {
 			p.octopuses[dKey]++

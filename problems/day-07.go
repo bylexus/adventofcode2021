@@ -23,7 +23,7 @@ type Day07 struct {
 }
 
 func (p *Day07) GetName() string {
-	return "AoC 2021 - Day 7 - The Treachery of Whales"
+	return "The Treachery of Whales"
 }
 
 func (p *Day07) Init() {

@@ -27,7 +27,7 @@ type Day14 struct {
 }
 
 func (p *Day14) GetName() string {
-	return "AoC 2021 - Day 14 - Extended Polymerization"
+	return "Extended Polymerization"
 }
 
 func (p *Day14) Init() {

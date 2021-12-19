@@ -23,7 +23,7 @@ type Day10 struct {
 }
 
 func (p *Day10) GetName() string {
-	return "AoC 2021 - Day 10 - Syntax Scoring"
+	return "Syntax Scoring"
 }
 
 func (p *Day10) Init() {

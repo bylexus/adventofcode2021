@@ -28,7 +28,7 @@ type Day03 struct {
 }
 
 func (p *Day03) GetName() string {
-	return "AoC 2021 - Day 3 - Binary Diagnostic"
+	return "Binary Diagnostic"
 }
 
 func (p *Day03) Init() {
