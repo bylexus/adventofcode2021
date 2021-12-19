@@ -16,6 +16,19 @@ I use this year's event to learn a small bit of GO. Here are my conclusions so f
 * Meh: Sometimes it is not directly clear if a function parameter is taken by value or by reference: This can lead to 
   unwanted behaviour: e.g. if you pass a Struct by value, it is copied into the function. This MAY be an advantage, but
   for me, it is annoying most of the time (as the struct will need to be modified within the function).
+* Ugly: Slices.... Oh boy, if you don't be very careful, you will mess up...
+  Slices are somewhat.... Scary... As soon as you re-assign sub-slices, bad things happen.
+  An example:
+```go
+a := []int{1,2,3,4,5,6}
+b := []int{7,8,9,10}
+c := a[0:3]
+c = assing(c, b[2:])
+a[0] = 42 // boom! now c[0] is ALSO 42... 
+```
+  You should copy a slice first, to avoid such behaviour. So you have to especially careful if working with slices. And it is NOT AT ALL 
+  clear that things like the one shown above happen...
+
 
 Around Day 15 I noticed that I got more proficient with GO. I know how to best build
 data structures, I know how call by value / by reference works etc.
@@ -425,3 +438,17 @@ So my run times exploded:
 * Solution 1: 140ms
 * Solution 1: 2051ms :-(
 
+**Refactoring:**
+
+It nagged me that I had to copy the tree to a flat array to find left/right neighbours... This MUST be possible
+by just walking the tree!
+
+So I invested some minutes to refactor it, and voilà, that's it: Instead of flattening the tree to an array,
+I simply walk it to:
+1) find the element left/right of the actual one, to execute the explosion
+2) find the next element to reduce
+
+This is MUCH better for memory AND runtime:
+
+* Solution 1: 6.7ms
+* Solution 1: 104ms

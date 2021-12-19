@@ -20,7 +20,6 @@ type Day18Node interface {
 	setParentNode(p *Day18Pair)
 	String() string
 	reduceOne() bool
-	toArr() []Day18Node
 	magnitude() uint64
 }
 
@@ -106,89 +105,76 @@ func (p *Day18Pair) splitValueNode(valueNode *Day18Value) *Day18Pair {
 	return &newNode
 }
 
-// flatten the tree to an array,
-// execute ONE reduce operation, and return, indicating if
-// any action was taken.
-// repeat from outside if needed, or use reduce() method on a pair
-// to reduce until done.
-func (n *Day18Pair) reduceOne() bool {
-	arr := n.toArr()
-
-	// process explodes:
-	for _, entry := range arr {
-		switch entry.(type) {
-		case *Day18Pair:
-			e := entry.(*Day18Pair)
-			if e.nrOfParents() >= 4 {
-				newNode := n.explodeNode(e)
-				if e.parentNode.leftNode == entry {
-					e.parentNode.leftNode = newNode
-				}
-				if e.parentNode.rightNode == entry {
-					e.parentNode.rightNode = newNode
-				}
-				return true
+// Walk the tree from the root to find the first
+// item that needs to be exploded.
+// execute it, then return true (else false)
+func (n *Day18Pair) reduceExplode(root Day18Node) bool {
+	switch root.(type) {
+	case *Day18Pair:
+		e := root.(*Day18Pair)
+		if e.nrOfParents() >= 4 {
+			newNode := n.explodeNode(e)
+			if e.parentNode.leftNode == root {
+				e.parentNode.leftNode = newNode
 			}
-		}
-	}
-
-	//process splits:
-	for _, entry := range arr {
-		switch entry.(type) {
-		case *Day18Value:
-			c := entry.(*Day18Value)
-			if c.value >= 10 {
-				newNode := n.splitValueNode(c)
-				if c.parentNode.leftNode == entry {
-					c.parentNode.leftNode = newNode
-				}
-				if c.parentNode.rightNode == entry {
-					c.parentNode.rightNode = newNode
-				}
+			if e.parentNode.rightNode == root {
+				e.parentNode.rightNode = newNode
+			}
+			return true
+		} else {
+			ret := n.reduceExplode(e.leftNode)
+			if ret == true {
 				return true
+			} else {
+				return n.reduceExplode(e.rightNode)
 			}
 		}
 	}
 	return false
 }
 
-// Flattens all value nodes of the pair to an array,
-// so returning all value elements of the tree in a list,
-// traversing the tree left--right.
-func (n *Day18Pair) toValueArr() []*Day18Value {
-	arr := make([]*Day18Value, 0)
-	if n.leftNode != nil {
-		switch n.leftNode.(type) {
-		case *Day18Value:
-			arr = append(arr, n.leftNode.(*Day18Value))
-		case *Day18Pair:
-			arr = append(arr, n.leftNode.(*Day18Pair).toValueArr()...)
+func (n *Day18Pair) reduceSplit(root Day18Node) bool {
+	switch root.(type) {
+	case *Day18Pair:
+		e := root.(*Day18Pair)
+		ret := n.reduceSplit(e.leftNode)
+		if ret == true {
+			return true
+		} else {
+			return n.reduceSplit(e.rightNode)
+		}
+
+	case *Day18Value:
+		c := root.(*Day18Value)
+		if c.value >= 10 {
+			newNode := n.splitValueNode(c)
+			if c.parentNode.leftNode == root {
+				c.parentNode.leftNode = newNode
+			}
+			if c.parentNode.rightNode == root {
+				c.parentNode.rightNode = newNode
+			}
+			return true
 		}
 	}
-	if n.rightNode != nil {
-		switch n.rightNode.(type) {
-		case *Day18Value:
-			arr = append(arr, n.rightNode.(*Day18Value))
-		case *Day18Pair:
-			arr = append(arr, n.rightNode.(*Day18Pair).toValueArr()...)
-		}
-	}
-	return arr
+	return false
 }
 
-// Flattens all nodes of the tree to an array,
-// so returning all elements of the tree in a list,
-// traversing the tree parent-left-right.
-func (n *Day18Pair) toArr() []Day18Node {
-	arr := make([]Day18Node, 0)
-	arr = append(arr, n)
-	if n.leftNode != nil {
-		arr = append(arr, n.leftNode.toArr()...)
+// execute ONE reduce operation, and return, indicating if
+// any action was taken.
+// repeat from outside if needed, or use reduce() method on a pair
+// to reduce until done.
+func (n *Day18Pair) reduceOne() bool {
+	// process explodes:
+	switch n.reduceExplode(n.root()) {
+	case true:
+		return true
+	case false:
+		return n.reduceSplit(n.root())
 	}
-	if n.rightNode != nil {
-		arr = append(arr, n.rightNode.toArr()...)
-	}
-	return arr
+
+	//process splits, if no explodes happened:
+	return n.reduceSplit(n.root())
 }
 
 func (n *Day18Pair) walkLeftToRightToStopnode(node *Day18Pair, stopValue *Day18Value, lastValue *Day18Value) (bool, *Day18Value) {
@@ -315,11 +301,6 @@ func (n *Day18Value) reduceOne() bool {
 }
 func (n *Day18Value) root() *Day18Pair {
 	return n.parent().root()
-}
-func (n *Day18Value) toArr() []Day18Node {
-	arr := make([]Day18Node, 1)
-	arr[0] = n
-	return arr
 }
 
 func (n *Day18Value) magnitude() uint64 {
