@@ -486,3 +486,27 @@ This is MUCH better for memory AND runtime:
 
 Sorry - this is my limit - This one is way off-limit for my brain or at least I am not
 ready to invest that many time. I skip that day.
+
+## Day 20 - Trench Map
+
+At first that one seemed relatively complex - because all 9x9 empty patches would toggle on/off for each round,
+as my algo input suggested. This is unfortunate, as "empty" space don't keep empty - it toggles.
+
+After a bit of thinking I found a very simple solution: I can just remember what "unknown" empty 9x9 patches are at the moment:
+on or off. Then I just had to calculate all pixels that are NOT fully empty / full. This includes one more pixel row/col for
+each round, so each round the pixels to calculate increases (a bit).
+
+So in the end, simple if you see the clue behind it :-)
+
+Run times:
+
+* Solution 1: 17ms
+* Solution 2: 931ms
+
+**Refactoring:**
+
+I felt the urge to make it a bit more efficient - so instead of operating with strings / runes, I use a byte as pixel - 0 or 1.
+This makes the algorithm slightly more efficient:
+
+* Solution 1: 9ms
+* Solution 2: 528ms

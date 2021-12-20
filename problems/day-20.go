@@ -9,7 +9,6 @@ package problems
 
 import (
 	"fmt"
-	"strconv"
 
 	"alexi.ch/aoc2021/lib"
 	"alexi.ch/aoc2021/lib/types"
@@ -19,13 +18,13 @@ type Day20 struct {
 	solution1 uint64
 	solution2 uint64
 	input     []string
-	algo      string
-	image     map[types.Point]rune
+	algo      []byte
+	image     map[types.Point]byte
 	minX      int
 	maxX      int
 	minY      int
 	maxY      int
-	emptyVal  rune
+	emptyVal  byte
 }
 
 func (p *Day20) GetName() string {
@@ -36,24 +35,35 @@ func (p *Day20) Init() {
 	// Read input
 	// input := lib.ReadInputLines("input/day20-test.txt")
 	input := lib.ReadInputLines("input/day20-input.txt")
+	p.algo = make([]byte, 0, len(input[0]))
+	for _, r := range input[0] {
+		if r == '.' {
+			p.algo = append(p.algo, 0)
+		} else {
+			p.algo = append(p.algo, 1)
 
-	p.algo = input[0]
+		}
+	}
 
 	p.minX = 0
 	p.minY = 0
 	p.maxY = len(input[1:]) - 1
 	p.maxX = len(input[1]) - 1
-	p.image = make(map[types.Point]rune)
-	p.emptyVal = '.'
+	p.image = make(map[types.Point]byte)
+	p.emptyVal = 0
 
 	for y, line := range input[1:] {
 		for x, r := range line {
-			p.image[types.Point{X: x, Y: y}] = r
+			if r == '.' {
+				p.image[types.Point{X: x, Y: y}] = 0
+			} else {
+				p.image[types.Point{X: x, Y: y}] = 1
+			}
 		}
 	}
 }
 
-func (p *Day20) getAt(x, y int) rune {
+func (p *Day20) getAt(x, y int) byte {
 	val, present := p.image[types.Point{X: x, Y: y}]
 	if present != true {
 		return p.emptyVal
@@ -65,7 +75,12 @@ func (p *Day20) getAt(x, y int) rune {
 func (p *Day20) printImg() {
 	for y := p.minY; y <= p.maxY; y++ {
 		for x := p.minX; x <= p.maxX; x++ {
-			fmt.Print(string(p.image[types.Point{X: x, Y: y}]))
+			val := p.image[types.Point{X: x, Y: y}]
+			if val == 0 {
+				fmt.Print(".")
+			} else {
+				fmt.Print("#")
+			}
 		}
 		fmt.Println()
 	}
@@ -73,28 +88,24 @@ func (p *Day20) printImg() {
 	fmt.Println()
 }
 
-func (p *Day20) calcNewVal(x, y int) rune {
-	binstr := ""
+func (p *Day20) calcNewVal(x, y int) byte {
+	nr := 0
 	// create binary nr from 9-patch around x/y:
 	for dy := y - 1; dy <= y+1; dy++ {
 		for dx := x - 1; dx <= x+1; dx++ {
 			val := p.getAt(dx, dy)
-			if val == '.' {
-				binstr += "0"
+			if val == 0 {
+				nr = (nr << 1) | 0
 			} else {
-				binstr += "1"
+				nr = (nr << 1) | 1
 			}
 		}
 	}
-	nr, err := strconv.ParseInt(binstr, 2, 16)
-	if err != nil {
-		panic(err)
-	}
-	return rune(p.algo[nr])
+	return p.algo[nr]
 }
 
 func (p *Day20) calcRound() {
-	newImg := make(map[types.Point]rune)
+	newImg := make(map[types.Point]byte)
 	p.minX--
 	p.minY--
 	p.maxX++
@@ -106,17 +117,17 @@ func (p *Day20) calcRound() {
 		}
 	}
 	p.image = newImg
-	if p.emptyVal == '.' {
-		p.emptyVal = rune(p.algo[0])
+	if p.emptyVal == 0 {
+		p.emptyVal = p.algo[0]
 	} else {
-		p.emptyVal = rune(p.algo[len(p.algo)-1])
+		p.emptyVal = p.algo[len(p.algo)-1]
 	}
 }
 
 func (p *Day20) calcOnPixels() int {
 	pixels := 0
 	for _, r := range p.image {
-		if r == '#' {
+		if r == 1 {
 			pixels++
 		}
 	}
@@ -132,6 +143,7 @@ func (p *Day20) Run1() {
 }
 
 func (p *Day20) Run2() {
+	// only calc 48 rounds (2 already done in part 1)
 	for i := 0; i < 48; i++ {
 		p.calcRound()
 	}
