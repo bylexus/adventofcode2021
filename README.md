@@ -481,3 +481,8 @@ This is MUCH better for memory AND runtime:
 
 * Solution 1: 6.7ms
 * Solution 1: 104ms
+
+## Day 19 - Beacon Scanner
+
+Sorry - this is my limit - This one is way off-limit for my brain or at least I am not
+ready to invest that many time. I skip that day.
