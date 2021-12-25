@@ -29,6 +29,19 @@ a[0] = 42 // boom! now c[0] is ALSO 42...
   You should copy a slice first, to avoid such behaviour. So you have to especially careful if working with slices. And it is NOT AT ALL 
   clear that things like the one shown above happen...
 
+* Ugh: No ternary operator (e.g. `a := foo == true ? "yes" : "no"`). So simple one-liners like the one shown are just not possible,
+  they can only be solved like this:
+```go
+var a string
+if foo == true {
+  a = "yes"
+} else {
+  a = "no"
+}
+```
+
+I mean, really??? sorry, that's just insane...
+
 
 Around Day 15 I noticed that I got more proficient with GO. I know how to best build
 data structures, I know how call by value / by reference works etc.
@@ -510,3 +523,38 @@ This makes the algorithm slightly more efficient:
 
 * Solution 1: 9ms
 * Solution 2: 528ms
+
+## Day 21 - Dirac Dice
+
+OK, that's a tough one - I solved part 1 naively. For the 2nd part I have to figure out some kind of memoization.
+
+My ideas so far:
+
+- keep / cache the number of future wins (future = all possible permutations for future rolls) for each player for each actual point
+  (e.g. if I reach 7 points, and I already reached 7 points with another combination before, I know already all the future wins).
+
+## Day 22 - Reactor Reboot
+
+1st part solved with single pixels - which defintifely will not work for the 2nd part. I *think* I let that one go - 
+this is far too complex for me to implement.
+
+## Day 23 - Amphipod
+
+Some kind of "Tower of hanoi" problem? No idea how to solve that - I guess this is my mental limit :-)
+
+## Day 24 - Arithmetic Logic Unit
+
+A virtual CPU, allright - but I guess just try-and-error will not work here. So I guess I have to analyze the instructions
+and see what happens.
+
+Or maybe I just try the brute-force method for part one? Let's see...
+
+
+## Day25 - Sea Cucumbers
+
+The last one was relatively simple - but unfortunately, I missed some stars in the last days...
+So no final sequence for me :-)
+
+Maybe there is a way to make today's solution more performant - I used a double-buffered map
+(so instantiated a new map TWICE every turn). I think about that a bit, to make it more
+performant...

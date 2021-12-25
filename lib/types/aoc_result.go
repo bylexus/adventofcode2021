@@ -20,17 +20,16 @@ type AocProblem interface {
 	GetName() string      // a title of the problem
 }
 
-const hashKeyMultiplier int = 10000000
-
-type PointKey int
 type Point struct {
 	X int
 	Y int
+	Z int
 }
 
 func (p Point) Add(other Point) Point {
 	return Point{
 		X: p.X + other.X,
 		Y: p.Y + other.Y,
+		Z: p.Z + other.Z,
 	}
 }

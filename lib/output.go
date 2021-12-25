@@ -12,6 +12,18 @@ func AnsiBold(input string) string {
 	return fmt.Sprintf("\033[31;1;4m%v\033[0m", input)
 }
 
+func AnsiRed(input string) string {
+	return fmt.Sprintf("\u001b[31m%v\u001b[0m", input)
+}
+
+func AnsiYellow(input string) string {
+	return fmt.Sprintf("\u001b[33m%v\u001b[0m", input)
+}
+
+func AnsiGreen(input string) string {
+	return fmt.Sprintf("\u001b[32m%v\u001b[0m", input)
+}
+
 func Highlight(input string) string {
 	return fmt.Sprintf("\033[1;4m%v\033[0m", input)
 }
@@ -31,6 +43,16 @@ func MeasureTime(f func()) time.Duration {
 	f()
 	end := time.Since(start)
 	return end
+}
+
+func formatDuration(d time.Duration) string {
+	if d > time.Second {
+		return AnsiRed(fmt.Sprint(d))
+	}
+	if d > time.Millisecond*800 {
+		return AnsiYellow(fmt.Sprint(d))
+	}
+	return AnsiGreen(fmt.Sprint(d))
 }
 
 func OutputResultList(list []types.AoCResult, total time.Duration) {
@@ -62,12 +84,12 @@ func OutputResultList(list []types.AoCResult, total time.Duration) {
 			name = name[:len(name)-6] + "..."
 		}
 		fmt.Printf(
-			"%-6s|%-35s|%15s|%15s|%15s\n",
+			"%-6s|%-35s|%24s|%24s|%24s\n",
 			line.Key,
 			name,
-			line.TimeSolution1,
-			line.TimeSolution2,
-			line.TimeSolution1+line.TimeSolution2,
+			formatDuration(line.TimeSolution1),
+			formatDuration(line.TimeSolution2),
+			formatDuration(line.TimeSolution1+line.TimeSolution2),
 		)
 	}
 	fmt.Print(

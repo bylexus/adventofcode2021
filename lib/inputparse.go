@@ -119,6 +119,16 @@ func MinInt(a int, b int) int {
 	return b
 }
 
+func WithinInt(a, min, max int) int {
+	if a < min {
+		return min
+	}
+	if a > max {
+		return max
+	}
+	return a
+}
+
 func MaxUInt64(a uint64, b uint64) uint64 {
 	if a > b {
 		return a
